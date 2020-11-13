@@ -1,24 +1,78 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+const { default: Navbar } = require("./components/Navbar");
+
 
 function App() {
+
+  const [ todo, setTodo ] = useState([]);
+  const [ data, setData ] = useState('');
+
+
+  function onSubmit(e){
+    e.preventDefault();
+    if(data === '') return alert('VAZIO')
+    setTodo([
+      ...todo,
+      data
+    ])
+    setData('')
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+      <Navbar/>
+      <div 
+        class="jumbotron" 
+        style={{
+          display:"flex",
+          justifyContent:"center"
+      }}>
+        <form 
+          onSubmit={onSubmit} 
+          style={{
+            display:"flex",
+            justifyContent:"center"
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <input               
+            type="text"
+            style={{
+              width:400
+            }}
+            class="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            placeholder="TO DO"
+            value={data}
+            onChange={e => setData(e.target.value)}
+            data-cy="input-task"
+          />
+          <button 
+            className="btn btn-primary ml-1" 
+            type="submit"
+            data-cy="btn-add"
+           >
+            ADD
+          </button>
+        </form>
+      </div>
+
+
+      <div 
+        style={{
+          display:"flex",
+          justifyContent:"center",
+          padding:122,
+          marginTop:0}}
+      >
+        <ul>
+            {
+              todo.map(item => <li key={item}>{item}</li>)
+            }
+        </ul>
+      </div>
+    </>
   );
 }
 
